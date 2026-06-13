@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2urn · Carrd Plugin Suite</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #09090f;
+      --surface:  #0f0f1a;
+      --border:   #1e1e30;
+      --accent:   #7C5CBF;
+      --accent2:  #4A90D9;
+      --text:     #e8e8f0;
+      --muted:    #666680;
+      --tag-bg:   #1a1a2e;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 60px;
+      background: rgba(9,9,15,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700; font-size: 1rem;
+      color: var(--text); text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    nav a.nav-link {
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    nav a.nav-link:hover { color: var(--text); }
+    .nav-links { display: flex; gap: 2rem; }
+
+    /* Hero */
+    .hero {
+      padding: 160px 2rem 80px;
+      max-width: 900px; margin: 0 auto;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.125rem; color: var(--muted);
+      max-width: 560px; margin: 0 auto 2.5rem;
+    }
+    .hero-cta {
+      display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.75rem;
+      border-radius: 6px; font-size: 0.9rem; font-weight: 500;
+      text-decoration: none; transition: all 0.2s; cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { background: #9370d4; transform: translateY(-1px); }
+    .btn-ghost {
+      border: 1px solid var(--border); color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* Stats bar */
+    .stats {
+      display: flex; justify-content: center; gap: 4rem;
+      padding: 2rem; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem; font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* Plugins grid */
+    .plugins {
+      max-width: 1100px; margin: 6rem auto;
+      padding: 0 2rem;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      color: var(--muted); text-transform: uppercase;
+      margin-bottom: 3rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .card {
+      background: var(--surface);
+      padding: 2rem;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .card:hover { background: #13131f; }
+    .card-header {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 1rem;
+    }
+    .card-icon {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .card-version {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; color: var(--muted);
+      background: var(--tag-bg); padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+    .card h3 {
+      font-size: 1rem; font-weight: 600;
+      margin-bottom: 0.5rem; letter-spacing: -0.01em;
+    }
+    .card p {
+      font-size: 0.875rem; color: var(--muted);
+      line-height: 1.5;
+    }
+    .card-type {
+      display: inline-block; margin-top: 1rem;
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      font-family: 'Space Mono', monospace;
+    }
+    .card a {
+      position: absolute; inset: 0;
+      border-radius: inherit;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* Ambient glow */
+    .glow {
+      position: fixed; top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(124,92,191,0.12) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    @media (max-width: 600px) {
+      .stats { gap: 2rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="glow"></div>
+
+<nav>
+  <a href="/" class="nav-logo">2urn<span>.</span>dev</a>
+  <div class="nav-links">
+    <a href="#plugins" class="nav-link">Plugins</a>
+    <a href="https://github.com/2urn/Carrd" class="nav-link" target="_blank">GitHub</a>
+    <a href="https://2urn.com" class="nav-link" target="_blank">2urn.com</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <p class="hero-eyebrow">Carrd Plugin Suite</p>
+  <h1>Make Carrd perform like a<br><em>premium platform</em></h1>
+  <p class="hero-sub">11 Pro+ plugins that extend Carrd beyond its native limits — without leaving Carrd.</p>
+  <div class="hero-cta">
+    <a href="#plugins" class="btn btn-primary">Browse Plugins</a>
+    <a href="https://github.com/2urn/Carrd" class="btn btn-ghost" target="_blank">View on GitHub</a>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat-item">
+    <div class="stat-num">11</div>
+    <div class="stat-label">Pro+ Plugins</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">2</div>
+    <div class="stat-label">Templates</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">∞</div>
+    <div class="stat-label">Carrd Limits Broken</div>
+  </div>
+</div>
+
+<section class="plugins" id="plugins">
+  <p class="section-label">All Plugins</p>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⚡</div>
+        <span class="card-version">v1.1</span>
+      </div>
+      <h3>Carrd Chrome Pro+</h3>
+      <p>Sticky header with fade/shrink and automatic mobile slide-out navigation.</p>
+      <span class="card-type">Chrome Extension</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/chrome-pro-plus" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⌨️</div>
+        <span class="card-version">v2.1.2</span>
+      </div>
+      <h3>Keyboard Navigation Pro+</h3>
+      <p>Full keyboard navigation between sections with arrow keys, Page Up/Down, Home and End.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/keyboard-navigation-pro" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🎛️</div>
+        <span class="card-version">v1.7.3</span>
+      </div>
+      <h3>Gallery Filter Pro+</h3>
+      <p>Filterable gallery using data attributes. Smooth opacity and scale transitions.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/gallery-filter-pro" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⬡</div>
+        <span class="card-version">v2.0</span>
+      </div>
+      <h3>Clone Engine</h3>
+      <p>Deterministic section cloning. No polling, no random ID collisions. Replaces setInterval patterns.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/clone-engine" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🎨</div>
+        <span class="card-version">v1.4</span>
+      </div>
+      <h3>Design Tokens</h3>
+      <p>CSS custom property token system for consistent color, typography, spacing, and motion across Carrd sites.</p>
+      <span class="card-type">CSS / Embed</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/design-tokens" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🌈</div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3>Gradient FX</h3>
+      <p>Animated gradient backgrounds via data attributes. Four presets: purple-blue, sunset, ocean, dark.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/gradient-fx" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">✦</div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3>Shader FX</h3>
+      <p>WebGL shader backgrounds. Real-time GPU-rendered wave, noise, and plasma effects on any section.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/shader-fx" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">▦</div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3>Pattern FX</h3>
+      <p>SVG pattern backgrounds via data attributes. Dots, grid, lines, and cross patterns with custom colors.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/pattern-fx" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">◈</div>
+        <span class="card-version">v2.0</span>
+      </div>
+      <h3>SVG FX</h3>
+      <p>Animated SVG decorative elements — blobs, circles, and wave shapes — as section backgrounds.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/svg-fx" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">💧</div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3>Water Glass Engine</h3>
+      <p>Glassmorphism / frosted glass effect with backdrop blur, saturation, and optional ripple on click.</p>
+      <span class="card-type">Embed Script</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/water-glass-engine" target="_blank"></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">⬕</div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3>Section Cloner</h3>
+      <p>Clone entire Carrd sections — scrollpoint anchor + all containers — in one click. Alt+C shortcut.</p>
+      <span class="card-type">Chrome Extension</span>
+      <a href="https://github.com/2urn/Carrd/tree/main/section-cloner" target="_blank"></a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2urn · <a href="https://2urn.com" target="_blank">2urn.com</a> · Built on Carrd, pushing Carrd past its limits.</p>
+</footer>
+
+</body>
+</html>
