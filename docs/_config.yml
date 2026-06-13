@@ -1,0 +1,42 @@
+# 2urn · Carrd Plugin Suite — GitHub Pages config
+title: 2urn · Carrd Plugin Suite
+description: Premium plugins that make Carrd perform like a premium platform — without leaving Carrd.
+url: https://2urn.github.io
+baseurl: /Carrd
+
+# Author
+author:
+  name: 2urn
+  email: info@2urn.com
+  url: https://2urn.com
+
+# Theme — using minimal for full custom HTML control
+theme: null
+
+# Collections
+collections:
+  plugins:
+    output: true
+    permalink: /plugins/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: null
+
+# Exclude from build
+exclude:
+  - "*.md"
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+
+# SEO
+lang: en
+timezone: America/New_York
+
+# Social
+github_username: 2urn
