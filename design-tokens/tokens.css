@@ -1,0 +1,41 @@
+/* 2urn · Design Tokens v1.4 */
+:root {
+  /* Color */
+  --color-primary:    #000000;
+  --color-secondary:  #ffffff;
+  --color-accent:     #7C5CBF;
+  --color-muted:      #888888;
+  --color-bg:         #ffffff;
+  --color-surface:    #f5f5f5;
+
+  /* Typography */
+  --font-heading:     'Inter', sans-serif;
+  --font-body:        'Inter', sans-serif;
+  --font-mono:        'JetBrains Mono', monospace;
+  --size-xs:          0.75rem;
+  --size-sm:          0.875rem;
+  --size-base:        1rem;
+  --size-lg:          1.25rem;
+  --size-xl:          1.5rem;
+  --size-2xl:         2rem;
+  --size-3xl:         3rem;
+
+  /* Spacing */
+  --space-xs:   0.25rem;
+  --space-sm:   0.5rem;
+  --space-md:   1rem;
+  --space-lg:   2rem;
+  --space-xl:   4rem;
+  --space-2xl:  8rem;
+
+  /* Border */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  16px;
+  --radius-full: 9999px;
+
+  /* Transition */
+  --ease-default: 0.3s ease;
+  --ease-fast:    0.15s ease;
+  --ease-slow:    0.6s ease;
+}
